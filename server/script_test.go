@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	lua "github.com/siddontang/golua"
-	"github.com/siddontang/ledisdb/config"
+	"github.com/uchti/ledisdb/config"
 
 	"testing"
 )

@@ -7,7 +7,7 @@ package leveldb
 import "C"
 
 import (
-	"github.com/siddontang/ledisdb/store/driver"
+	"github.com/uchti/ledisdb/store/driver"
 )
 
 type Snapshot struct {

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/config"
+	"github.com/uchti/ledisdb/config"
 )
 
 var testAppOnce sync.Once

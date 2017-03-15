@@ -16,7 +16,7 @@ import (
 	"github.com/siddontang/go/log"
 	"github.com/siddontang/go/num"
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/uchti/ledisdb/ledis"
 )
 
 var errReadRequest = errors.New("invalid request protocol")

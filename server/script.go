@@ -11,7 +11,7 @@ import (
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/num"
 	lua "github.com/siddontang/golua"
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/uchti/ledisdb/ledis"
 )
 
 //ledis <-> lua type conversion, same as http://redis.io/commands/eval

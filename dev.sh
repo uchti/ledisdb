@@ -4,7 +4,7 @@ export LEDISTOP=$(pwd)
 export LEDISROOT="${LEDISROOT:-${LEDISTOP/\/src\/github.com\/siddontang\/ledisdb/}}"
 # LEDISTOP sanity check
 if [[ "$LEDISTOP" == "${LEDISTOP/\/src\/github.com\/siddontang\/ledisdb/}" ]]; then
-    echo "WARNING: LEDISTOP($LEDISTOP) does not contain src/github.com/siddontang/ledisdb"
+    echo "WARNING: LEDISTOP($LEDISTOP) does not contain src/github.com/uchti/ledisdb"
     false
 fi
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/siddontang/ledisdb/store"
+	"github.com/uchti/ledisdb/store"
 )
 
 var errDataType = errors.New("error data type")
@@ -218,6 +218,25 @@ func (db *DB) buildDataScanKeyRange(storeDataType byte, key []byte, cursor []byt
 	return
 }
 
+func (db *DB) buildDataScanKeyRangeX(storeDataType byte, key []byte, startKey, endKey []byte, reverse bool) (minKey []byte, maxKey []byte, err error) {
+	if !reverse {
+		if minKey, err = db.encodeDataScanMinKey(storeDataType, key, startKey); err != nil {
+			return
+		}
+		if maxKey, err = db.encodeDataScanMaxKey(storeDataType, key, endKey); err != nil {
+			return
+		}
+	} else {
+		if minKey, err = db.encodeDataScanMinKey(storeDataType, key, endKey); err != nil {
+			return
+		}
+		if maxKey, err = db.encodeDataScanMaxKey(storeDataType, key, startKey); err != nil {
+			return
+		}
+	}
+	return
+}
+
 func (db *DB) encodeDataScanMinKey(storeDataType byte, key []byte, cursor []byte) ([]byte, error) {
 	return db.encodeDataScanKey(storeDataType, key, cursor)
 }
@@ -267,6 +286,23 @@ func (db *DB) buildDataScanIterator(storeDataType byte, key []byte, cursor []byt
 	return it, nil
 }
 
+func (db *DB) buildDataScanIteratorX(storeDataType byte, key []byte, startKey, endKey []byte, count int,
+	inclusive bool, reverse bool) (*store.RangeLimitIterator, error) {
+
+	if err := checkKeySize(key); err != nil {
+		return nil, err
+	}
+
+	minKey, maxKey, err := db.buildDataScanKeyRangeX(storeDataType, key, startKey, endKey, reverse)
+	if err != nil {
+		return nil, err
+	}
+
+	it := db.buildScanIterator(minKey, maxKey, inclusive, reverse)
+
+	return it, nil
+}
+
 func (db *DB) hScanGeneric(key []byte, cursor []byte, count int, inclusive bool, match string, reverse bool) ([]FVPair, error) {
 	count = checkScanCount(count)
 
@@ -300,12 +336,44 @@ func (db *DB) hScanGeneric(key []byte, cursor []byte, count int, inclusive bool,
 	return v, nil
 }
 
+func (db *DB) hScanGenericX(key []byte, startKey, endKey []byte, count int, inclusive bool, reverse bool) ([]FVPair, error) {
+	count = checkScanCount(count)
+
+	v := make([]FVPair, 0, count)
+
+	it, err := db.buildDataScanIteratorX(HashType, key, startKey, endKey, count, inclusive, reverse)
+	if err != nil {
+		return nil, err
+	}
+
+	defer it.Close()
+
+	for i := 0; it.Valid() && i < count; it.Next() {
+		_, f, err := db.hDecodeHashKey(it.Key())
+		if err != nil {
+			return nil, err
+		}
+		v = append(v, FVPair{Field: f, Value: it.Value()})
+
+		i++
+	}
+
+	return v, nil
+}
+
 func (db *DB) HScan(key []byte, cursor []byte, count int, inclusive bool, match string) ([]FVPair, error) {
 	return db.hScanGeneric(key, cursor, count, inclusive, match, false)
 }
 
+func (db *DB) HScanX(key []byte, startKey, endKey []byte, count int, inclusive bool) ([]FVPair, error) {
+	return db.hScanGenericX(key, startKey, endKey, count, inclusive, false)
+}
+
 func (db *DB) HRevScan(key []byte, cursor []byte, count int, inclusive bool, match string) ([]FVPair, error) {
 	return db.hScanGeneric(key, cursor, count, inclusive, match, true)
+}
+func (db *DB) HRevScanX(key []byte, startKey, endKey []byte, count int, inclusive bool) ([]FVPair, error) {
+	return db.hScanGenericX(key, startKey, endKey, count, inclusive, true)
 }
 
 func (db *DB) sScanGeneric(key []byte, cursor []byte, count int, inclusive bool, match string, reverse bool) ([][]byte, error) {

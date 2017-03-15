@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/siddontang/go/snappy"
-	"github.com/siddontang/ledisdb/store"
+	"github.com/uchti/ledisdb/store"
 )
 
 type DumpHead struct {

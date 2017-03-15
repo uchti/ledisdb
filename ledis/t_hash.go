@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/siddontang/go/num"
-	"github.com/siddontang/ledisdb/store"
+	"github.com/uchti/ledisdb/store"
 )
 
 type FVPair struct {

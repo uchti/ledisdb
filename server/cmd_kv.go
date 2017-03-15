@@ -3,7 +3,7 @@ package server
 import (
 	"strconv"
 
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/uchti/ledisdb/ledis"
 )
 
 // func getCommand(c *client) error {

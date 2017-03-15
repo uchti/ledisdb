@@ -1,7 +1,7 @@
 package store
 
 import (
-	"github.com/siddontang/ledisdb/store/driver"
+	"github.com/uchti/ledisdb/store/driver"
 )
 
 type Slice interface {

@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/config"
+	"github.com/uchti/ledisdb/config"
 )
 
 func checkDataEqual(master *App, slave *App) error {

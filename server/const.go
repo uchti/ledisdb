@@ -3,7 +3,7 @@ package server
 import (
 	"errors"
 
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/uchti/ledisdb/ledis"
 )
 
 var (

@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/siddontang/ledisdb/config"
+	"github.com/uchti/ledisdb/config"
 )
 
 func TestGoLevelDBStore(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/config"
+	"github.com/uchti/ledisdb/config"
 )
 
 func TestDumpRestore(t *testing.T) {
